@@ -34,6 +34,15 @@
 # - グローバルコマンドの反映に数分かかる場合があります。ギルド限定同期に切り替える場合は GUILD_ID を設定して tree.sync(guild=...) を使用してください
 
 import os
+import os
+from dotenv import load_dotenv
+
+# Renderなどの環境では .env がなくてもエラーにならないようにする
+load_dotenv()  # .envがあれば読み込む、なければスルー
+
+TOKEN = os.getenv("DISCORD_TOKEN")
+if not TOKEN:
+    raise RuntimeError("DISCORD_TOKEN が見つかりません。Render の Environment に設定してください。")
 from typing import Optional
 import discord
 from discord import app_commands
@@ -153,4 +162,5 @@ async def setup_roles(
 if __name__ == "__main__":
     if not TOKEN:
         raise RuntimeError(".env の DISCORD_TOKEN が見つかりません。設定してください。")
+
     bot.run(TOKEN)
